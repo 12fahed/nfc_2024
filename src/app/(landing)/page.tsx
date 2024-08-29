@@ -1,8 +1,13 @@
 "use client"
+import React from "react";
+import UnprotectedNavbar from "@/components/UnprotectedNavbar";
 
 function LandingPage() {
     return (
-        <div>Hello World</div>
+        <div>
+            <UnprotectedNavbar />
+            <div>Hello World</div>
+        </div>
     );
 }
 
