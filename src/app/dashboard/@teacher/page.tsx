@@ -1,30 +1,53 @@
 "use client";
 import { useState } from "react";
-import CreateClassDialog from "@/components/CreateClassDialog";
+import TeacherClass from "@/components/TeacherClass"; // Replace with actual import
+import TeacherLecture from "@/components/TeacherLecture"; // Replace with actual import
 import { Button } from "@/components/ui/button";
-import ClassCards from "@/components/DisplayClass";
 
-export default function Teacher() {
-  const [dialogOpen, setDialogOpen] = useState(false);
+export default function TeacherDashboard() {
+  const [view, setView] = useState("class");
 
-  const handleClose = () => {
-    setDialogOpen(false);
-  };
-
-  const handleOpen = () => {
-    setDialogOpen(true);
+  const renderView = () => {
+    if (view === "class") {
+      return <TeacherClass />;
+    } else if (view === "lecture") {
+      return <TeacherLecture />;
+    }
   };
 
   return (
-    <div className="container mx-auto p-4 ">
-      <h1 className="text-3xl font-bold mb-6">Welcome to the Class Management System</h1>
-      <Button onClick={handleOpen} className="btn-primary">
-        Create Class
-      </Button >
-      {dialogOpen && <CreateClassDialog onClose={handleClose} />}
-      <div className="p-4">
-        <ClassCards />
-      </div>
+    <div className="min-h-screen bg-gray-100 flex flex-col">
+      <header className="bg-white shadow-md p-4">
+        <h1 className="text-4xl font-extrabold text-gray-800 text-center">Teacher Dashboard</h1>
+      </header>
+      <nav className="bg-white p-4 shadow-inner flex justify-center space-x-8 mb-6">
+        <Button
+          onClick={() => setView("class")}
+          className={`px-6 py-2 rounded-full ${
+            view === "class"
+              ? "bg-blue-600 text-white shadow-md"
+              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+          }`}
+        >
+          Class Management
+        </Button>
+        <Button
+          onClick={() => setView("lecture")}
+          className={`px-6 py-2 rounded-full ${
+            view === "lecture"
+              ? "bg-blue-600 text-white shadow-md"
+              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+          }`}
+        >
+          Lecture Scheduling
+        </Button>
+      </nav>
+      <main className="flex-grow p-4">
+        <div className="max-w-7xl mx-auto">{renderView()}</div>
+      </main>
+      {/* <footer className="bg-white p-4 text-center text-gray-500 text-sm shadow-inner">
+        © 2024 Your School Name - All Rights Reserved
+      </footer> */}
     </div>
   );
 }
