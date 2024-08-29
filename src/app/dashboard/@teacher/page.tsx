@@ -1,11 +1,23 @@
 "use client";
+  
 import { useState } from "react";
+import { useRouter } from "next/navigation"; // Use this to navigate programmatically
 import TeacherClass from "@/components/TeacherClass"; // Replace with actual import
 import TeacherLecture from "@/components/TeacherLecture"; // Replace with actual import
 import { Button } from "@/components/ui/button";
 
 export default function TeacherDashboard() {
   const [view, setView] = useState("class");
+  const router = useRouter();
+
+  const handleLogout = () => {
+    // Clear any stored tokens or session data
+    localStorage.removeItem("authToken"); // Replace with your actual key
+    sessionStorage.removeItem("authToken"); // If you use sessionStorage
+
+    // Redirect to login page
+    router.push("/");
+  };
 
   const renderView = () => {
     if (view === "class") {
@@ -17,8 +29,14 @@ export default function TeacherDashboard() {
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
-      <header className="bg-white shadow-md p-4">
+      <header className="bg-white shadow-md p-4 flex justify-between items-center">
         <h1 className="text-4xl font-extrabold text-gray-800 text-center">Teacher Dashboard</h1>
+        <Button 
+          onClick={handleLogout} 
+          className="bg-red-600 text-white px-4 py-2 rounded-full hover:bg-red-700"
+        >
+          Logout
+        </Button>
       </header>
       <nav className="bg-white p-4 shadow-inner flex justify-center space-x-8 mb-6">
         <Button
