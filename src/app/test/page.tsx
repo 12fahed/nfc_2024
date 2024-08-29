@@ -1,10 +1,10 @@
 "use client";
 import { useState } from "react";
-import CreateClassDialog from "@/components/CreateClassDialog";
+import ScheduleLectureDialog from "@/components/CreateLectureDialog"; // Make sure to create this file
 import { Button } from "@/components/ui/button";
-import ClassCards from "@/components/DisplayClass";
+import LectureCards from "@/components/DisplayLecture"; // Adjust according to your component
 
-export default function Home() {
+export default function Teacher() {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleClose = () => {
@@ -16,14 +16,14 @@ export default function Home() {
   };
 
   return (
-    <div className="container mx-auto p-4 ">
-      <h1 className="text-3xl font-bold mb-6">Welcome to the Class Management System</h1>
+    <div className="container mx-auto p-4">
+      <h1 className="text-3xl font-bold mb-6">Welcome to the Lecture Scheduling System</h1>
       <Button onClick={handleOpen} className="btn-primary">
-        Create Class
-      </Button >
-      {dialogOpen && <CreateClassDialog onClose={handleClose} />}
+        Schedule Lecture
+      </Button>
+      {dialogOpen && <ScheduleLectureDialog onClose={handleClose} />}
       <div className="p-4">
-        <ClassCards />
+        <LectureCards /> {/* Adjust according to your component */}
       </div>
     </div>
   );
