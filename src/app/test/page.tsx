@@ -4,7 +4,7 @@ import CreateClassDialog from "@/components/CreateClassDialog";
 import { Button } from "@/components/ui/button";
 import ClassCards from "@/components/DisplayClass";
 
-export default function Teacher() {
+export default function Home() {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleClose = () => {
