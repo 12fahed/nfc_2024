@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { doc, getDoc, updateDoc, arrayUnion, collection, addDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { ref, getDownloadURL, uploadBytes } from 'firebase/storage';
 import { db, storage } from '@/config/firebase';
 import styles from './StudentCard.module.css';
@@ -13,6 +13,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from '@/components/ui/button';
+import { AttendanceChart } from '@/components/StudentDashboard';
+import { SubmissionTable } from '@/components/StudentDashTable';
 
 interface StudentData {
   name: string;
@@ -38,7 +40,7 @@ interface ClassEntry {
 interface ClassData {
   classes: ClassEntry[];
 }
-
+  
 export default function Student() {
   const [studentData, setStudentData] = useState<StudentData | null>(null);
   const [classData, setClassData] = useState<ClassEntry | null>(null);
@@ -47,6 +49,7 @@ export default function Student() {
   const [selectedNote, setSelectedNote] = useState<string | null>(null);
   const [noteURL, setNoteURL] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchStudentData = async () => {
@@ -60,13 +63,14 @@ export default function Student() {
 
       try {
         const userObj = JSON.parse(user);
-        const userId = userObj.uid;
+        const id = userObj.uid;
+        setUserId(id);
 
-        if (!userId) {
+        if (!id) {
           throw new Error('No user ID found in localStorage');
         }
 
-        const docRef = doc(db, 'Students', userId);
+        const docRef = doc(db, 'Students', id);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
@@ -130,9 +134,8 @@ export default function Student() {
   };
 
   const handleSubmitAssignment = async () => {
-    if (!file || !studentData) return; // Ensure all required data is present
-  
-    const userId = JSON.parse(localStorage.getItem('user') || '{}').uid;
+    if (!file || !userId) return; // Ensure all required data is present
+
     const fileRef = ref(storage, `assignments/${userId}/${file.name}`);
     const submissionDate = new Date().toISOString(); // Get the current date and time
   
@@ -153,57 +156,65 @@ export default function Student() {
       console.error('Error uploading file: ', err);
       setError(err as Error);
     }
-  };
+  };  
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
+  console.log("UserID: ", userId);
+
   return (
-    <div className={styles.card}>
-      {studentData ? (
-        <div>
-          {classData ? (
-            <div>
-              {classData.notes.length > 0 ? (
-                <ul>
-                  {classData.notes.map((note, index) => (
-                    <li key={index}>
-                      <Dialog>
-                        <p><strong>Class: {classData.class}</strong></p>
-                        <DialogTrigger asChild>
-                          <Button onClick={() => handleNoteClick(note.url)}>View Assignment (Due: {note.dueDate})</Button>
-                        </DialogTrigger>
-                        <DialogContent className="sm:max-w-[1000px]">
-                          <DialogHeader>
-                            <DialogTitle>Assignment</DialogTitle>
-                          </DialogHeader>
-                          <div className="py-4">
-                            {noteURL ? (
-                              <iframe src={noteURL} width="100%" height="400px" title="Note"></iframe>
-                            ) : (
-                              <p>Loading file...</p>
-                            )}
-                            <input type="file" onChange={handleFileChange} />
-                            <Button onClick={handleSubmitAssignment} disabled={!file}>
-                              Submit Assignment
-                            </Button>
-                          </div>
-                        </DialogContent>
-                      </Dialog>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p>No assignments available for this class.</p>
-              )}
-            </div>
-          ) : (
-            <p>No class data found</p>
-          )}
-        </div>
-      ) : (
-        <div>No student data found</div>
-      )}
+    <div>
+      <div className={styles.card}>
+        {studentData ? (
+          <div>
+            {classData ? (
+              <div>
+                {classData.notes.length > 0 ? (
+                  <ul>
+                    {classData.notes.map((note, index) => (
+                      <li key={index}>
+                        <Dialog>
+                          <strong>ASSIGNMENTS PENDING</strong>
+                          <p><strong>Class: {classData.class}</strong></p>
+                          <DialogTrigger>
+                            <Button onClick={() => handleNoteClick(note.url)}>View Assignment (Due: {note.dueDate})</Button>
+                          </DialogTrigger>
+                          <DialogContent className="sm:max-w-[1000px]">
+                            <DialogHeader>
+                              <DialogTitle>Assignment</DialogTitle>
+                            </DialogHeader>
+                            <div className="py-4">
+                              {noteURL ? (
+                                <iframe src={noteURL} width="100%" height="400px" title="Note"></iframe>
+                              ) : (
+                                <p>Loading file...</p>
+                              )}
+                              <input type="file" onChange={handleFileChange} />
+                              <Button onClick={handleSubmitAssignment} disabled={!file}>
+                                Submit Assignment
+                              </Button>
+                            </div>
+                          </DialogContent>
+                        </Dialog>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>No assignments available for this class.</p>
+                )}
+              </div>
+            ) : (
+              <p>No class data found</p>
+            )}
+          </div>
+        ) : (
+          <div>No student data found</div>
+        )}
+      </div>
+      {userId && <AttendanceChart userId={userId} />}
+
+      <SubmissionTable />
     </div>
   );
 }
