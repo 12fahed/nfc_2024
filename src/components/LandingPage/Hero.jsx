@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import Image from "next/image";
 import { useTheme } from "next-themes";
 import HERO from "@/public/images/hero-image.png"
+import "./Landing.css"
 
 export default function Hero() {
   const { theme } = useTheme();
@@ -46,10 +47,10 @@ export default function Hero() {
     <div>
       <div className="main-hero">
         <div className="text-area">
-          <div className="hero-text ">
-            <h3 className="introduce">INTRODUCING KAKSHA</h3>
-            <h1 className="hero-main-text">Transformation of Management of Education</h1>
-            <div className="hero-overview">
+          <div className="hero-text" style={{width:800}}>
+            <h3 className="introduce" style={{width:400}}>INTRODUCING KAKSHA</h3>
+            <h1 className="hero-main-text" style={{gap:2,paddingTop:0}}>Transformation of Management of Education</h1>
+            <div className="hero-overview" style={{width:700,paddingTop:0}}>
               Automate attendance, assignments, and exams to streamline education management. Real-time monitoring and analytics enhance student performance and simplify processes.
             </div>
           </div>
@@ -61,7 +62,7 @@ export default function Hero() {
         <Image
             src={theme === "dark" ? HERO : HERO}
             alt="Feature 1"
-            width={650}
+            width={600}
             height={650}
             className="hero-figma"
           />
