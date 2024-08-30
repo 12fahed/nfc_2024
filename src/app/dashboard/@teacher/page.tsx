@@ -18,7 +18,7 @@ export default function TeacherDashboard() {
       return <StudentTable />;
     } else if (view === "submission") {
       return <SubmissionsTable />;
-    }
+    } 
   };
 
   return (
@@ -60,13 +60,25 @@ export default function TeacherDashboard() {
         <Button
           onClick={() => setView("submission")}
           className={`px-6 py-2 rounded-full ${
-            view === "submission  "
+            view === "submission"
               ? "bg-purple-950 text-white shadow-md"
               : "bg-gray-200 text-gray-700 hover:bg-gray-300"
           }`}
         >
           Submission
         </Button>
+        <Button
+            onClick={() => window.open("http://127.0.0.1:9998/", "_blank")}
+            className={`px-6 py-2 rounded-full ${
+              view === ""
+                ? "bg-purple-950 text-white shadow-md"
+                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+            }`}
+          >
+            Online Classes
+          </Button>
+
+
       </nav>
       <main className="flex-grow p-4">
         <div className="max-w-7xl mx-auto">{renderView()}</div>
