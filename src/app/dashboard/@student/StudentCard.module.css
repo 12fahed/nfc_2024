@@ -1,0 +1,180 @@
+/* Navigation Bar Styles */
+.navbar {
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.navList {
+  display: flex;
+  gap: 16px;
+}
+
+.navListItem {
+  list-style: none;
+}
+
+.navLink {
+  text-decoration: none;
+  color: #1a202c; /* Dark gray color for text */
+  font-weight: 600;
+}
+
+.navLink:hover {
+  color: #2d3748; /* Slightly darker gray for hover effect */
+}
+
+.activeLink {
+  background-color: #2b6cb0; /* Blue color for active state */
+  color: #ffffff; /* White text color for active state */
+  border-radius: 9999px; /* Rounded corners for the active button */
+  padding: 8px 16px;
+}
+
+/* Header Styles */
+.header {
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.headerTitle {
+  font-size: 24px;
+  color: #1a202c;
+}
+
+.logoutButton {
+  background-color: #e53e3e; /* Red color for logout button */
+  color: #ffffff;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.logoutButton:hover {
+  background-color: #c53030; /* Darker red color for hover effect */
+}
+
+/* Button Styles */
+.button {
+  padding: 8px 16px;
+  border-radius: 9999px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+
+.buttonBlue {
+  background-color: #2b6cb0;
+  color: #ffffff;
+}
+
+.buttonBlue:hover {
+  background-color: #2c5282;
+}
+
+.buttonGray {
+  background-color: #edf2f7;
+  color: #1a202c;
+}
+
+.buttonGray:hover {
+  background-color: #e2e8f0;
+}
+
+.buttonRed {
+  background-color: #e53e3e;
+  color: #ffffff;
+}
+
+.buttonRed:hover {
+  background-color: #c53030;
+}
+
+.buttonShadow {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.buttonTextWhite {
+  color: #ffffff;
+}
+
+.buttonTextGray {
+  color: #4a5568;
+}
+
+/* StudentCard.module.css */
+.dialogContent {
+  padding: 2rem;
+}
+
+.dialogButton {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.dialogButton:hover {
+  background-color: #0056b3;
+}
+
+
+/* StudentCard.module.css */
+.card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 20px;
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.card-content {
+  margin-bottom: 20px;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Navbar.module.css */
+.navbar {
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-bottom: 1px solid #e1e1e1;
+}
+
+.navList {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 20px;
+}
+
+.navList li {
+  display: inline;
+}
+
+.navList a {
+  text-decoration: none;
+  color: #0070f3;
+  font-weight: bold;
+}

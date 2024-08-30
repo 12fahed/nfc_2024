@@ -15,7 +15,7 @@ interface ClassData {
   year: string;
   class: string; 
   div: string;
-  notes?: string[];
+  notes?: { url: string; dueDate: string }[];
 }
 
 const ClassCards = () => {
@@ -25,19 +25,21 @@ const ClassCards = () => {
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [dueDate, setDueDate] = useState<string>("");
 
   useEffect(() => {
     const fetchClasses = async () => {
       if (!user) return;
-
+    
       const userDocRef = doc(db, "Class", user.uid);
-
+    
       try {
         const docSnapshot = await getDoc(userDocRef);
-
+    
         if (docSnapshot.exists()) {
           const data = docSnapshot.data();
-          setClasses(data.classes || []);
+          const fetchedClasses = Array.isArray(data.classes) ? data.classes : [];
+          setClasses(fetchedClasses);
         } else {
           setClasses([]);
         }
@@ -45,6 +47,7 @@ const ClassCards = () => {
         console.error("Error fetching classes: ", error);
       }
     };
+    
 
     fetchClasses();
   }, [user]);
@@ -55,8 +58,12 @@ const ClassCards = () => {
     }
   };
 
+  const handleDueDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDueDate(e.target.value);
+  };
+
   const handleUpload = async () => {
-    if (!file || !selectedClass) return;
+    if (!file || !selectedClass || !dueDate) return;
 
     setLoading(true);
 
@@ -69,7 +76,9 @@ const ClassCards = () => {
         if (cls === selectedClass) {
           return {
             ...cls,
-            notes: cls.notes ? [...cls.notes, downloadURL] : [downloadURL],
+            notes: cls.notes
+              ? [...cls.notes, { url: downloadURL, dueDate }]
+              : [{ url: downloadURL, dueDate }],
           };
         }
         return cls;
@@ -87,6 +96,7 @@ const ClassCards = () => {
       setLoading(false);
       setFile(null);
       setSelectedClass(null);
+      setDueDate("");
     }
   };
 
@@ -132,12 +142,12 @@ const ClassCards = () => {
                       >
                         <FileTextIcon className="w-5 h-5 text-gray-600" />
                         <a
-                          href={note}
+                          href={note.url}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-blue-500 underline truncate"
                         >
-                          Note {index + 1}
+                          Note {index + 1} (Due: {note.dueDate})
                         </a>
                       </div>
                     ))}
@@ -148,6 +158,13 @@ const ClassCards = () => {
               )}
               <div className="grid w-full max-w-sm items-center gap-1.5">
                 <Input id="file" type="file" onChange={handleFileChange} />
+                <Input
+                  id="dueDate"
+                  type="date"
+                  value={dueDate}
+                  onChange={handleDueDateChange}
+                  placeholder="Select due date"
+                />
               </div>
             </div>
             <DialogFooter>
@@ -167,3 +184,40 @@ const ClassCards = () => {
 };
 
 export default ClassCards;
+
+// now if the schema was
+//   classes: [
+//     {
+//       class: "C2",
+//       div: "C21",
+//       note: [
+//         {
+//           dueDate: "2024-08-30",
+//           url: ""
+//         }
+//       ],
+//       year: "2026"
+//     }
+//   ]
+
+//   then after submitting the solution then the schema will become
+
+//   classes: [
+//     {
+//       class: "C2",
+//       div: "C21",
+//       note: [
+//         {
+//           dueDate: "2024-08-30",
+//           url: "",
+//           submission: [
+//             {
+//               studUID: "",
+//               url: ""
+//             }
+//           ]
+//         }
+//       ],
+//       year: "2026"
+//     }
+//   ]
