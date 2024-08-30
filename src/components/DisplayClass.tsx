@@ -108,7 +108,7 @@ const ClassCards = () => {
   return (
     <div className="grid grid-cols-3 gap-4">
       {classes.map((classItem, index) => (
-        <Card key={index} className="w-full max-w-sm mx-auto">
+        <Card key={index} className="w-full max-w-sm ml-1 border-2 border-black border-solid">
           <CardHeader>
             <CardTitle>{classItem.class}</CardTitle>
           </CardHeader>

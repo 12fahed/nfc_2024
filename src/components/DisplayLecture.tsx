@@ -54,12 +54,12 @@ const LectureCards = () => {
   return (
     <div className="grid grid-cols-3 gap-4">
       {lectures.map((lectureItem, index) => (
-        <Card key={index} className="w-full max-w-sm mx-auto">
+        <Card key={index} className="w-full max-w-sm mx-auto border-2 border-black border-solid">
           <CardHeader>
-            <CardTitle>{lectureItem.lectureName}</CardTitle> {/* Updated to display lectureName */}
+            <CardTitle className="font-montserrat">{lectureItem.lectureName}</CardTitle> {/* Updated to display lectureName */}
           </CardHeader>
           <CardContent>
-            <CardDescription>
+            <CardDescription className="font-poppins">
               <p><strong>Class:</strong> {lectureItem.class}</p>
               <p><strong>Year:</strong> {lectureItem.year}</p>
               <p><strong>Division:</strong> {lectureItem.div}</p>
