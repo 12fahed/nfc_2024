@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Speech-Enabled Student Performance Predictor</title>
+    <style>
+        
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+        background: #faeddb;
+      }
+      .container {
+        max-width: 800px;
+        margin: auto;
+        background: #F9f7f4;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border: 2px solid black;
+      }
+      h1 {
+        color: #333;
+        text-align: center;
+        font-family: 'Josefin Sans',sans-serif;
+        font-size: 40px;
+      }
+      .form-group {
+        margin-bottom: 15px;
+        font-family: 'Poppins',sans-serif;
+        width: 97%;
+        display: flex;
+        flex-direction: column;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+      input[type="text"],
+      input[type="number"] {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+      input[type="submit"] {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      input[type="submit"]:hover {
+        background-color: #45a049;
+      }
+      #status {
+        text-align: center;
+        margin-top: 20px;
+        font-weight: bold;
+      }
+      #speechButton {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background-color: #008cba;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 20px;
+      }
+      #speechButton:hover {
+        background-color: #007b9a;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1> Student Performance Analysis</h1>
+      <form id="predictionForm" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="sex">Sex:</label>
+          <input type="text" id="sex" name="sex" required />
+        </div>
+        <div class="form-group">
+          <label for="age">Age:</label>
+          <input type="number" id="age" name="age" required />
+        </div>
+        <div class="form-group">
+          <label for="address">Address:</label>
+          <input type="text" id="address" name="address" required />
+        </div>
+        <div class="form-group">
+          <label for="studytime">Study Time (hours per week):</label>
+          <input type="number" id="studytime" name="studytime" required />
+        </div>
+        <div class="form-group">
+          <label for="failures">Number of Past Class Failures:</label>
+          <input type="number" id="failures" name="failures" required />
+        </div>
+        <div class="form-group">
+          <label for="schoolsup">School Support (Yes/No):</label>
+          <input type="text" id="schoolsup" name="schoolsup" required />
+        </div>
+        <div class="form-group">
+          <label for="activities">Extra-curricular Activities (Yes/No):</label>
+          <input type="text" id="activities" name="activities" required />
+        </div>
+        <div class="form-group">
+          <label for="higher">Higher Education (Yes/No):</label>
+          <input type="text" id="higher" name="higher" required />
+        </div>
+        <div class="form-group">
+          <label for="absences">Number of Absences:</label>
+          <input type="number" id="absences" name="absences" required />
+        </div>
+        <div class="form-group">
+          <label for="TCSG1">TCS Unit Test 1:</label>
+          <input type="number" id="TCSG1" name="TCSG1" required />
+        </div>
+        <div class="form-group">
+          <label for="TCSG2">TCS Unit Test 2:</label>
+          <input type="number" id="TCSG2" name="TCSG2" required />
+        </div>
+        <div class="form-group">
+          <label for="SEG1">SE Unit Test 1:</label>
+          <input type="number" id="SEG1" name="SEG1" required />
+        </div>
+        <div class="form-group">
+          <label for="SEG2">SE Unit Test 2:</label>
+          <input type="number" id="SEG2" name="SEG2" required />
+        </div>
+        <div class="form-group">
+          <label for="DWMG1">DWM Unit Test 1:</label>
+          <input type="number" id="DWMG1" name="DWMG1" required />
+        </div>
+        <div class="form-group">
+          <label for="DWMG2">DWM Unit Test 2:</label>
+          <input type="number" id="DWMG2" name="DWMG2" required />
+        </div>
+        <div class="form-group">
+          <label for="IPG1">IP Unit Test 1:</label>
+          <input type="number" id="IPG1" name="IPG1" required />
+        </div>
+        <div class="form-group">
+          <label for="IPG2">IP Unit Test 2:</label>
+          <input type="number" id="IPG2" name="IPG2" required />
+        </div>
+        <div class="form-group">
+          <label for="CNG1">CN Unit Test 1:</label>
+          <input type="number" id="CNG1" name="CNG1" required />
+        </div>
+        <div class="form-group">
+          <label for="CNG2">CN Unit Test 2:</label>
+          <input type="number" id="CNG2" name="CNG2" required />
+        </div>
+        <input type="submit" value="Predict Performance" />
+      </form>
+      <button id="speechButton">Start Speech Recognition</button>
+      <div id="status"></div>
+    </div>
+
+    <script>
+        let recognition;
+let isListening = false;
+let formFields = {
+  sex: false,
+  age: false,
+  address: false,
+  studytime: false,
+  failures: false,
+  schoolsup: false,
+  activities: false,
+  higher: false,
+  absences: false,
+  TCSG1: false,
+  TCSG2: false,
+  SEG1: false,
+  SEG2: false,
+  DWMG1: false,
+  DWMG2: false,
+  IPG1: false,
+  IPG2: false,
+  CNG1: false,
+  CNG2: false,
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+  if ("webkitSpeechRecognition" in window) {
+    recognition = new webkitSpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+
+    recognition.onstart = () => {
+      document.querySelector("#status").textContent = "Listening...";
+      speakText("Speech recognition started. Say 'fill form' to begin.");
+      readFormContent();
+    };
+
+    recognition.onerror = (event) => {
+      document.querySelector("#status").textContent =
+        "Error occurred in recognition: " + event.error;
+      console.error("Speech recognition error:", event.error);
+    };
+
+    recognition.onend = () => {
+      if (isListening) {
+        recognition.start();
+      }
+    };
+
+    recognition.onresult = (event) => {
+      let final_transcript = "";
+      for (let i = event.resultIndex; i < event.results.length; ++i) {
+        if (event.results[i].isFinal) {
+          final_transcript += event.results[i][0].transcript;
+        }
+      }
+
+      final_transcript = final_transcript.toLowerCase();
+      console.log("Transcript:", final_transcript);
+
+      handleSpeechResult(final_transcript);
+    };
+
+    document
+      .getElementById("speechButton")
+      .addEventListener("click", toggleSpeechRecognition);
+  } else {
+    document.querySelector("#status").textContent =
+      "Speech Recognition Not Available";
+    document.getElementById("speechButton").style.display = "none";
+  }
+});
+
+function toggleSpeechRecognition() {
+  if (isListening) {
+    recognition.stop();
+    isListening = false;
+    document.getElementById("speechButton").textContent =
+      "Start Speech Recognition";
+  } else {
+    recognition.start();
+    isListening = true;
+    document.getElementById("speechButton").textContent =
+      "Stop Speech Recognition";
+  }
+}
+
+function speakText(text) {
+  if ("speechSynthesis" in window) {
+    let utterance = new SpeechSynthesisUtterance(text);
+    speechSynthesis.speak(utterance);
+  } else {
+    console.error("Text-to-speech not supported");
+  }
+}
+
+function readFormContent() {
+  let fields = [
+    "Sex",
+    "Age",
+    "Address",
+    "Study Time (hours per week)",
+    "Number of Past Class Failures",
+    "School Support",
+    "Extra-curricular Activities",
+    "Higher Education",
+    "Number of Absences",
+    "TCS Unit Test 1",
+    "TCS Unit Test 2",
+    "SE Unit Test 1",
+    "SE Unit Test 2",
+    "DWM Unit Test 1",
+    "DWM Unit Test 2",
+    "IP Unit Test 1",
+    "IP Unit Test 2",
+    "CN Unit Test 1",
+    "CN Unit Test 2",
+  ];
+
+  let text = "The form fields are as follows: ";
+  fields.forEach((field) => {
+    text += field + ", ";
+  });
+  text =
+    text.slice(0, -2) +
+    ". Say the field name followed by the value you want to input.";
+
+  speakText(text);
+}
+
+function handleSpeechResult(transcript) {
+  // Mapping field names to corresponding IDs
+  const fieldMappings = {
+    sex: "sex",
+    age: "age",
+    address: "address",
+    "study time": "studytime",
+    failures: "failures",
+    "school support": "schoolsup",
+    "extra-curricular activities": "activities",
+    "higher education": "higher",
+    absences: "absences",
+    TCSG1: "TCSG1",
+    TCSG2: "TCSG2",
+    SEG1: "SEG1",
+    SEG2: "SEG2",
+    DWMG1: "DWMG1",
+    DWMG2: "DWMG2",
+    IPG1: "IPG1",
+    IPG2: "IPG2",
+    CNG1: "CNG1",
+    CNG2: "CNG2",
+  };
+
+  for (let key in fieldMappings) {
+    if (transcript.includes(key)) {
+      let fieldId = fieldMappings[key];
+      let value = transcript.replace(key, "").trim().match(/\w+/);
+      if (value) {
+        document.getElementById(fieldId).value = value[0];
+        formFields[fieldId] = true;
+        speakText(`${key} set to ${value[0]}`);
+      }
+      return;
+    }
+  }
+
+  if (transcript.includes("finish")) {
+    if (isFormComplete()) {
+      speakText(
+        "Form filling complete. You can review and submit the form."
+      );
+      recognition.stop();
+    } else {
+      speakText(
+        "Not all fields are filled yet. Please complete all fields before finishing."
+      );
+    }
+  }
+}
+
+function isFormComplete() {
+  return Object.values(formFields).every((value) => value === true);
+}
+
+document
+  .getElementById("predictionForm")
+  .addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    // Gather form data
+    const formData = new FormData(event.target);
+
+    // Convert FormData to JSON object
+    const data = {};
+    formData.forEach((value, key) => {
+      data[key] = value;
+    });
+
+    // Send the data to the Flask backend
+    fetch("/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        console.log("Form submitted successfully", result);
+        alert("Form submitted successfully!");
+      })
+      
+  });
+
+      </script>
+  </body>
+</html>

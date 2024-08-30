@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Performance Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        function speakText(text) {
+    console.log("Attempting to speak text:", text);
+    
+    if ('speechSynthesis' in window) {
+        let utterance = new SpeechSynthesisUtterance(text);
+        utterance.onend = function(event) {
+            console.log('Speech finished');
+        };
+        utterance.onerror = function(event) {
+            console.error('Speech error:', event.error);
+            alert("Error speaking text. Check console for details.");
+        };
+        speechSynthesis.speak(utterance);
+    } else {
+        console.error("Text-to-speech not supported in this browser");
+        alert("Text-to-speech is not supported in this browser. Please use a compatible browser.");
+    }
+}
+
+        document.addEventListener("DOMContentLoaded", () => {
+            if ("webkitSpeechRecognition" in window) {
+                let speechRecognition = new webkitSpeechRecognition();
+                let final_transcript = "";
+
+                speechRecognition.continuous = true;
+                speechRecognition.interimResults = true;
+
+                speechRecognition.onstart = () => {
+                    document.querySelector("#status").style.display = "block";
+                    const prompt = "Please say 'start' to read the contents of the webpage.";
+                    speakText(prompt);
+                };
+
+                speechRecognition.onerror = (event) => {
+                    document.querySelector("#status").style.display = "none";
+                    console.error("Speech Recognition Error:", event.error);
+                };
+
+                speechRecognition.onend = () => {
+                    document.querySelector("#status").style.display = "none";
+                    console.log("Speech Recognition Ended");
+                };
+
+                speechRecognition.onresult = (event) => {
+                    let interim_transcript = "";
+                    for (let i = event.resultIndex; i < event.results.length; ++i) {
+                        if (event.results[i].isFinal) {
+                            final_transcript += event.results[i][0].transcript;
+                        } else {
+                            interim_transcript += event.results[i][0].transcript;
+                        }
+                    }
+                    console.log("Detected Transcript:", final_transcript);
+                    if (final_transcript.toLowerCase().includes("start")) {
+                        let textContent = document.body.innerText;
+                        console.log("Text Content to Speak:", textContent);
+                        speakText(textContent);
+                    }
+                };
+
+                speechRecognition.start();
+            } else {
+                console.log("Speech Recognition Not Available");
+                alert("Speech Recognition is not available in this browser. Please use Google Chrome or another compatible browser.");
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Student Performance Predictor</h1>
+        <form method="post" class="form-grid">
+            <div class="form-group">
+                <label>Sex:</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="sex" value="M"> Male</label>
+                    <label><input type="radio" name="sex" value="F"> Female</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="age" required>
+            </div>
+            <div class="form-group">
+                <label>Address:</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="address" value="U"> Urban</label>
+                    <label><input type="radio" name="address" value="R"> Rural</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="studytime">Study Time:</label>
+                <input type="number" id="studytime" name="studytime" required>
+            </div>
+            <div class="form-group">
+                <label for="failures">Failures:</label>
+                <input type="number" id="failures" name="failures" required>
+            </div>
+            <div class="form-group">
+                <label>School Support:</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="schoolsup" value="yes"> Yes</label>
+                    <label><input type="radio" name="schoolsup" value="no"> No</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Extra-curricular Activities:</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="activities" value="yes"> Yes</label>
+                    <label><input type="radio" name="activities" value="no"> No</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Higher Education:</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="higher" value="yes"> Yes</label>
+                    <label><input type="radio" name="higher" value="no"> No</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="absences">Absences:</label>
+                <input type="number" id="absences" name="absences" required>
+            </div>
+            <div class="form-group">
+                <label for="TCSG1">TCSG1:</label>
+                <input type="number" id="TCSG1" name="TCSG1" required>
+            </div>
+            <div class="form-group">
+                <label for="TCSG2">TCSG2:</label>
+                <input type="number" id="TCSG2" name="TCSG2" required>
+            </div>
+            <div class="form-group">
+                <label for="SEG1">SEG1:</label>
+                <input type="number" id="SEG1" name="SEG1" required>
+            </div>
+            <div class="form-group">
+                <label for="SEG2">SEG2:</label>
+                <input type="number" id="SEG2" name="SEG2" required>
+            </div>
+            <div class="form-group">
+                <label for="DWMG1">DWMG1:</label>
+                <input type="number" id="DWMG1" name="DWMG1" required>
+            </div>
+            <div class="form-group">
+                <label for="DWMG2">DWMG2:</label>
+                <input type="number" id="DWMG2" name="DWMG2" required>
+            </div>
+            <div class="form-group">
+                <label for="IPG1">IPG1:</label>
+                <input type="number" id="IPG1" name="IPG1" required>
+            </div>
+            <div class="form-group">
+                <label for="IPG2">IPG2:</label>
+                <input type="number" id="IPG2" name="IPG2" required>
+            </div>
+            <div class="form-group">
+                <label for="CNG1">CNG1:</label>
+                <input type="number" id="CNG1" name="CNG1" required>
+            </div>
+            <div class="form-group">
+                <label for="CNG2">CNG2:</label>
+                <input type="number" id="CNG2" name="CNG2" required>
+            </div>
+            <input type="submit" value="Predict">
+        </form>
+        {% if feedback %}
+        <div class="feedback">
+            <h2>Feedback:</h2>
+            <ul>
+                {% for message in feedback %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        {% if error %}
+        <div class="error">
+            <p>{{ error }}</p>
+        </div>
+        {% endif %}
+        <div id="status" style="display: none;">Listening...</div>
+    </div>
+</body>
+</html>
