@@ -16,9 +16,11 @@ export default function TeacherLecture() {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6">Welcome to the Lecture Scheduling System</h1>
-      <Button onClick={handleOpen} className="btn-primary">
+    <div className="container mx-auto p-4" style={{ backgroundColor: '#F9F7F4' }}>
+      <h1 className="text-4xl font-josefin mb-6 font-semibold ml-4">Welcome to the Lecture Scheduling System</h1>
+      <Button
+        onClick={handleOpen}
+        className=" bg-primary-orange text-white bg-orange-600 hover:bg-gray-800 w-100px m-5">
         Schedule Lecture
       </Button>
       {dialogOpen && <ScheduleLectureDialog onClose={handleClose} />}

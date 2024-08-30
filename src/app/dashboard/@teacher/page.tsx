@@ -22,16 +22,16 @@ export default function TeacherDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
+    <div className="min-h-screen flex flex-col" style={{ backgroundColor: '#F9F7F4' }}>
       <header className="bg-white shadow-md p-4">
-        <h1 className="text-4xl font-extrabold text-gray-800 text-center">Teacher Dashboard</h1>
+      <h1 className="text-5xl font-josefin font-bold text-gray-800 text-center">Teacher Dashboard</h1>
       </header>
       <nav className="bg-white p-4 shadow-inner flex justify-center space-x-8 mb-6">
         <Button
           onClick={() => setView("class")}
           className={`px-6 py-2 rounded-full ${
             view === "class"
-              ? "bg-blue-600 text-white shadow-md"
+              ? "bg-purple-950 text-white shadow-md"
               : "bg-gray-200 text-gray-700 hover:bg-gray-300"
           }`}
         >
@@ -41,7 +41,7 @@ export default function TeacherDashboard() {
           onClick={() => setView("lecture")}
           className={`px-6 py-2 rounded-full ${
             view === "lecture"
-              ? "bg-blue-600 text-white shadow-md"
+              ? "bg-purple-950 text-white shadow-md"
               : "bg-gray-200 text-gray-700 hover:bg-gray-300"
           }`}
         >
@@ -51,7 +51,7 @@ export default function TeacherDashboard() {
           onClick={() => setView("attendance")}
           className={`px-6 py-2 rounded-full ${
             view === "attendance"
-              ? "bg-blue-600 text-white shadow-md"
+              ?"bg-purple-950 text-white shadow-md"
               : "bg-gray-200 text-gray-700 hover:bg-gray-300"
           }`}
         >
@@ -61,7 +61,7 @@ export default function TeacherDashboard() {
           onClick={() => setView("submission")}
           className={`px-6 py-2 rounded-full ${
             view === "submission  "
-              ? "bg-blue-600 text-white shadow-md"
+              ? "bg-purple-950 text-white shadow-md"
               : "bg-gray-200 text-gray-700 hover:bg-gray-300"
           }`}
         >
